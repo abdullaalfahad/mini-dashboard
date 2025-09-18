@@ -52,7 +52,7 @@ export default function ChartsSection() {
               <XAxis dataKey="name" />
               <YAxis />
               <Tooltip />
-              <Bar dataKey="posts" fill="#10b981" radius={[6, 6, 0, 0]} />
+              <Bar dataKey="posts" fill="lightblue" radius={[6, 6, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
         </div>

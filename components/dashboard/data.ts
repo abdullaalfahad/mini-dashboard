@@ -24,4 +24,5 @@ export const recentUsers = [
   { id: 1, name: "John Doe", email: "john@example.com" },
   { id: 2, name: "Jane Smith", email: "jane@example.com" },
   { id: 3, name: "Mark Lee", email: "mark@example.com" },
+  { id: 4, name: "Lucy Brown", email: "lucy@example.com" },
 ];
