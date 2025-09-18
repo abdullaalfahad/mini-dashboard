@@ -9,6 +9,7 @@ const links = [
   { href: "/", label: "Dashboard" },
   { href: "/posts", label: "Posts" },
   { href: "/users", label: "Users" },
+  { href: "/error-demo", label: "Error Demo" },
 ];
 
 export function Navbar() {
