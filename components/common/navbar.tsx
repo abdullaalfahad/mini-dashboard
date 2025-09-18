@@ -1,8 +1,10 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { Menu, X } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useState } from "react";
 import { cn } from "@/lib/utils";
 
 const links = [
@@ -14,18 +16,20 @@ const links = [
 
 export function Navbar() {
   const pathname = usePathname();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   return (
-    <nav className="w-full bg-gradient-to-r from-blue-50 to-indigo-50 border-b border-gray-200 shadow-sm">
-      <div className="max-w-6xl mx-auto px-4 flex items-center justify-between h-16">
+    <nav className="w-full bg-gradient-to-r from-indigo-50 to-blue-50 border-b border-gray-200 shadow-md">
+      <div className="py-8 px-4 max-w-6xl mx-auto flex items-center justify-between h-16">
         <Link
-          className="font-extrabold text-xl text-indigo-700 hover:text-indigo-900 transition-colors duration-200"
+          className="font-extrabold text-2xl text-indigo-800 hover:text-indigo-900 transition-colors duration-200"
           href="/"
         >
           MiniDashboard
         </Link>
 
-        <div className="flex space-x-8">
+        {/* Desktop Menu */}
+        <div className="hidden md:flex space-x-8">
           {links.map((link) => {
             const isActive = pathname === link.href;
             return (
@@ -52,7 +56,48 @@ export function Navbar() {
             );
           })}
         </div>
+
+        {/* Mobile Menu Button */}
+        <button
+          className="md:hidden p-2 text-gray-700 hover:text-indigo-600"
+          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          type="button"
+        >
+          {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+        </button>
       </div>
+
+      {/* Mobile Menu */}
+      {isMobileMenuOpen && (
+        <motion.div
+          animate={{ opacity: 1, height: "auto" }}
+          className="md:hidden bg-white border-t border-gray-200"
+          exit={{ opacity: 0, height: 0 }}
+          initial={{ opacity: 0, height: 0 }}
+          transition={{ duration: 0.3 }}
+        >
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col space-y-4">
+            {links.map((link) => {
+              const isActive = pathname === link.href;
+              return (
+                <Link
+                  className={cn(
+                    "text-sm font-semibold transition-colors duration-200",
+                    isActive
+                      ? "text-indigo-700"
+                      : "text-gray-700 hover:text-indigo-600"
+                  )}
+                  href={link.href}
+                  key={link.href}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  {link.label}
+                </Link>
+              );
+            })}
+          </div>
+        </motion.div>
+      )}
     </nav>
   );
 }
