@@ -22,7 +22,7 @@ export function Navbar() {
 
   return (
     <nav className="w-full bg-gradient-to-r from-indigo-50 to-blue-50 border-b border-gray-200 shadow-md">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16">
+      <div className="max-w-6xl mx-auto px-4 py-8 flex items-center justify-between h-16">
         <Link
           className="font-extrabold text-2xl text-indigo-800 hover:text-indigo-900 transition-colors duration-200"
           href="/"
@@ -64,7 +64,7 @@ export function Navbar() {
                 ? "bg-red-600 text-white hover:bg-red-700"
                 : "bg-indigo-600 text-white hover:bg-indigo-700"
             )}
-            onClick={() => (session ? signOut() : signIn())}
+            onClick={() => (session ? signOut({ callbackUrl: "/" }) : signIn())}
             type="button"
           >
             {session ? "Logout" : "Login"}
@@ -117,7 +117,7 @@ export function Navbar() {
                   : "bg-indigo-600 text-white hover:bg-indigo-700"
               )}
               onClick={() => {
-                session ? signOut() : signIn();
+                session ? signOut({ callbackUrl: "/" }) : signIn();
                 setIsMobileMenuOpen(false);
               }}
               type="button"

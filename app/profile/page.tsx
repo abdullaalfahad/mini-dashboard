@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { Card } from "@/components/common/card";
@@ -21,7 +22,7 @@ export default function ProfilePage() {
     );
 
   return (
-    <div className="p-6">
+    <div className="max-w-6xl mx-auto px-4 py-8">
       <Card title="Profile">
         <p>
           <b>Name:</b> {session.user?.name}
@@ -30,10 +31,12 @@ export default function ProfilePage() {
           <b>Email:</b> {session.user?.email}
         </p>
         {session.user?.image && (
-          <img
-            alt="Profile picture"
+          <Image
+            alt="User profile"
             className="w-16 h-16 rounded-full mt-4"
+            height={64}
             src={session.user.image}
+            width={64}
           />
         )}
       </Card>
