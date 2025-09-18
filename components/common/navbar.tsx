@@ -13,6 +13,7 @@ const links = [
   { href: "/posts", label: "Posts" },
   { href: "/users", label: "Users" },
   { href: "/error-demo", label: "Error Demo" },
+  { href: "/profile", label: "Profile", requiresAuth: true },
 ];
 
 export function Navbar() {
@@ -22,7 +23,7 @@ export function Navbar() {
 
   return (
     <nav className="w-full bg-gradient-to-r from-indigo-50 to-blue-50 border-b border-gray-200 shadow-md">
-      <div className="max-w-6xl mx-auto px-4 py-8 flex items-center justify-between h-16">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16">
         <Link
           className="font-extrabold text-2xl text-indigo-800 hover:text-indigo-900 transition-colors duration-200"
           href="/"
@@ -32,43 +33,56 @@ export function Navbar() {
 
         {/* Desktop Menu */}
         <div className="hidden md:flex items-center space-x-8">
-          {links.map((link) => {
-            const isActive = pathname === link.href;
-            return (
-              <div className="relative flex items-center" key={link.href}>
-                <Link
-                  className={cn(
-                    "text-sm font-semibold transition-colors duration-200",
-                    isActive
-                      ? "text-indigo-700"
-                      : "text-gray-700 hover:text-indigo-600"
+          {links
+            .filter(
+              (link) => !link.requiresAuth || (link.requiresAuth && session)
+            )
+            .map((link) => {
+              const isActive = pathname === link.href;
+              return (
+                <div className="relative flex items-center" key={link.href}>
+                  <Link
+                    className={cn(
+                      "text-sm font-semibold transition-colors duration-200",
+                      isActive
+                        ? "text-indigo-700"
+                        : "text-gray-700 hover:text-indigo-600"
+                    )}
+                    href={link.href}
+                  >
+                    {link.label}
+                  </Link>
+                  {isActive && (
+                    <motion.div
+                      className="absolute left-0 right-0 -bottom-2 h-1 bg-indigo-600 rounded-full"
+                      layoutId="navbar-underline"
+                      transition={{
+                        type: "spring",
+                        stiffness: 500,
+                        damping: 30,
+                      }}
+                    />
                   )}
-                  href={link.href}
-                >
-                  {link.label}
-                </Link>
-                {isActive && (
-                  <motion.div
-                    className="absolute left-0 right-0 -bottom-2 h-1 bg-indigo-600 rounded-full"
-                    layoutId="navbar-underline"
-                    transition={{ type: "spring", stiffness: 500, damping: 30 }}
-                  />
-                )}
-              </div>
-            );
-          })}
-          <button
-            className={cn(
-              "px-4 py-2 rounded-lg text-sm font-semibold transition-colors duration-200",
-              session
-                ? "bg-red-600 text-white hover:bg-red-700"
-                : "bg-indigo-600 text-white hover:bg-indigo-700"
-            )}
-            onClick={() => (session ? signOut({ callbackUrl: "/" }) : signIn())}
-            type="button"
-          >
-            {session ? "Logout" : "Login"}
-          </button>
+                </div>
+              );
+            })}
+          {session ? (
+            <button
+              className="px-4 py-2 rounded-lg bg-red-600 text-white font-semibold hover:bg-red-700 transition-colors duration-200"
+              onClick={() => signOut({ callbackUrl: "/" })}
+              type="button"
+            >
+              Logout
+            </button>
+          ) : (
+            <button
+              className="px-4 py-2 rounded-lg bg-indigo-600 text-white font-semibold hover:bg-indigo-700 transition-colors duration-200"
+              onClick={() => signIn("google", { callbackUrl: "/" })}
+              type="button"
+            >
+              Login
+            </button>
+          )}
         </div>
 
         {/* Mobile Menu Button */}
@@ -91,39 +105,51 @@ export function Navbar() {
           transition={{ duration: 0.3 }}
         >
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col space-y-4">
-            {links.map((link) => {
-              const isActive = pathname === link.href;
-              return (
-                <Link
-                  className={cn(
-                    "text-sm font-semibold transition-colors duration-200",
-                    isActive
-                      ? "text-indigo-700"
-                      : "text-gray-700 hover:text-indigo-600"
-                  )}
-                  href={link.href}
-                  key={link.href}
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  {link.label}
-                </Link>
-              );
-            })}
-            <button
-              className={cn(
-                "px-4 py-2 rounded-lg text-sm font-semibold transition-colors duration-200 text-left",
-                session
-                  ? "bg-red-600 text-white hover:bg-red-700"
-                  : "bg-indigo-600 text-white hover:bg-indigo-700"
-              )}
-              onClick={() => {
-                session ? signOut({ callbackUrl: "/" }) : signIn();
-                setIsMobileMenuOpen(false);
-              }}
-              type="button"
-            >
-              {session ? "Logout" : "Login"}
-            </button>
+            {links
+              .filter(
+                (link) => !link.requiresAuth || (link.requiresAuth && session)
+              )
+              .map((link) => {
+                const isActive = pathname === link.href;
+                return (
+                  <Link
+                    className={cn(
+                      "text-sm font-semibold transition-colors duration-200",
+                      isActive
+                        ? "text-indigo-700"
+                        : "text-gray-700 hover:text-indigo-600"
+                    )}
+                    href={link.href}
+                    key={link.href}
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    {link.label}
+                  </Link>
+                );
+              })}
+            {session ? (
+              <button
+                className="px-4 py-2 rounded-lg bg-red-600 text-white font-semibold hover:bg-red-700 transition-colors duration-200 text-left"
+                onClick={() => {
+                  signOut({ callbackUrl: "/" });
+                  setIsMobileMenuOpen(false);
+                }}
+                type="button"
+              >
+                Logout
+              </button>
+            ) : (
+              <button
+                className="px-4 py-2 rounded-lg bg-indigo-600 text-white font-semibold hover:bg-indigo-700 transition-colors duration-200 text-left"
+                onClick={() => {
+                  signIn("google", { callbackUrl: "/" });
+                  setIsMobileMenuOpen(false);
+                }}
+                type="button"
+              >
+                Login
+              </button>
+            )}
           </div>
         </motion.div>
       )}

@@ -26,7 +26,7 @@ export default function SignInPage() {
               Sign in with Google to access your dashboard
             </p>
             <button
-              className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-indigo-600 text-white font-semibold hover:bg-indigo-700 transition-colors duration-200"
+              className="w-full flex items-center cursor-pointer justify-center gap-2 px-4 py-2.5 rounded-lg bg-indigo-600 text-white font-semibold hover:bg-indigo-700 transition-colors duration-200"
               onClick={() => signIn("google", { callbackUrl: "/profile" })}
               type="button"
             >
@@ -35,13 +35,11 @@ export default function SignInPage() {
             </button>
             <p className="text-gray-500 text-xs text-center">
               By signing in, you agree to our{" "}
-              <a className="text-indigo-600 hover:underline" href="/terms">
+              <p className="text-indigo-600 hover:underline">
                 Terms of Service
-              </a>{" "}
+              </p>{" "}
               and{" "}
-              <a className="text-indigo-600 hover:underline" href="/privacy">
-                Privacy Policy
-              </a>
+              <p className="text-indigo-600 hover:underline">Privacy Policy</p>
             </p>
           </div>
         </Card>
