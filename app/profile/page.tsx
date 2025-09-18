@@ -7,10 +7,11 @@ import { Card } from "@/components/common/card";
 export default function ProfilePage() {
   const { data: session, status } = useSession();
 
-  if (status === "loading") return <p>Loading...</p>;
+  if (status === "loading")
+    return <p className="max-w-6xl mx-auto px-4 py-8">Loading...</p>;
   if (!session)
     return (
-      <div className="p-6">
+      <div className="max-w-6xl mx-auto px-4 py-8 ">
         <p className="text-red-500 mb-4">
           You must be logged in to view this page.
         </p>
@@ -21,7 +22,7 @@ export default function ProfilePage() {
     );
 
   return (
-    <div className="p-6">
+    <div className="max-w-6xl mx-auto px-4 py-8">
       <Card title="Profile">
         <p>
           <b>Name:</b> {session.user?.name}
