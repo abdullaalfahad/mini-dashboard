@@ -15,9 +15,9 @@ export default function PostsList() {
     "https://jsonplaceholder.typicode.com/posts"
   );
 
-  if (loading) return <p className="p-6">Loading posts...</p>;
+  if (loading) return <p>Loading posts...</p>;
   if (error)
-    return <p className="p-6 text-red-500">Failed to load posts: {error}</p>;
+    return <p className="text-red-500">Failed to load posts: {error}</p>;
 
   return (
     <motion.div
